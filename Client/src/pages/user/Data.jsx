@@ -10,10 +10,12 @@ import './UserPages.css'
 import jwt_decode from "jwt-decode";
 import { axiosJWTuser } from '../../config/axiosJWT';
 import { isUnauthorizedError } from '../../config/errorHandling';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ImageModal from './ImageModal'; // Create this component
 import { TabTitle } from '../../TabName';
 import loading from "../../Assets/Loading_Screen.gif"
+import "../../Components/SideBar/Navbar.css"
+import Dates from '../../Assets/Date';
 
 function formatDueDate(inputDate) {
   const date = new Date(inputDate);
@@ -30,11 +32,17 @@ function Data(props) {
   const [showImageModal, setShowImageModal] = useState(false);
   const [showNav, setShowNav] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [activeLink, setActiveLink] = useState(location.pathname);
+
+  const handleNavLinkClick = (path) => {
+    setActiveLink(path);
+  };
 
   useEffect(() => {
     const fetchDataAndPresensiData = async () => {
       try {
-        const ambilid = await axios.get('https://api.diskominfo-smg-magang.cloud/account/token', {
+        const ambilid = await axios.get('http://localhost:3000/account/token', {
           headers: {
             'role': "peserta_magang"
           },
@@ -42,7 +50,7 @@ function Data(props) {
         const decoded = jwt_decode(ambilid.data.token);
 
           
-        const response = await axiosJWTuser.get(`https://api.diskominfo-smg-magang.cloud/user/presensi/${decoded.userId}`);
+        const response = await axiosJWTuser.get(`http://localhost:3000/user/presensi/${decoded.userId}`);
         const dataWithKosong = response.data.presensi.map((item) => ({
           ...item,
           check_in: item.check_in === null ? (
@@ -97,7 +105,7 @@ function Data(props) {
   }
 
   return (
-    <div className="body-main">
+    <div className="body-main" style={{backgroundColor:"#f4f4f4"}}>
       <div className={`body-area${showNav ? " body-pd" : ""}`}>
       <header className={`header${showNav ? " body-pd" : ""}`}>
           <div className="header_toggle">
@@ -132,19 +140,27 @@ function Data(props) {
                 )}
               </a>
               <div className="nav_list">
-                <a href="/user/homepage" className="nav_link">
+              <a href="/user/homepage" target="_self"
+                  className={`nav_link ${activeLink === '/user/homepage' ? 'active' : ''}`} 
+                  onClick={() => handleNavLinkClick('user/homepage')}>
                   <i className="bi bi-house nav_icon" />
                   <span className="nav_name">Home</span>
                 </a>
-                <a href="/user/presensi/riwayat" target="_self" className="nav_link">
+                <a href="/user/presensi/riwayat" target="_self"
+                  className={`nav_link ${activeLink === '/user/presensi/riwayat' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('/user/presensi/riwayat')}>
                   <i className="bi bi-card-checklist nav_icon" />
                   <span className="nav_name">History Presensi</span>
                 </a>
-                <a href="/user/presensi" target="_self" className="nav_link">
+                <a href="/user/presensi" target="_self"
+                  className={`nav_link ${activeLink === '/user/presensi' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('/user/presensi')}>
                   <i className="bi bi-camera nav_icon" />
                   <span className="nav_name">Lakukan Presensi</span>
                 </a>
-                <a href="/user/tugas" target="_self" className="nav_link">
+                <a href="/user/tugas" target="_self"
+                  className={`nav_link ${activeLink === '/user/tugas' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('/user/presensi')}>
                   <i className="bi bi-list-task nav_icon" />
                   <span className="nav_name">Penugasan</span>
                 </a>
@@ -160,13 +176,17 @@ function Data(props) {
             </a>
           </nav>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-          <h1 style={{textAlign:'left', fontWeight:'bold', fontSize:'18px', fontfamily: 'Poppins'}} >Daftar data Absen</h1>
-          <br/>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+          <h1 style={{textAlign:'left', fontWeight:'bold', fontSize:'25px', fontfamily: 'Poppins'}} >Data Presensi</h1>
+          <Dates/>
+    
           {!data? (
             <img src={loading}  alt=""/>
-          ) : (
-          <ListTable data={data} />)}
+          ) : (<div style={{backgroundColor:'#ffffff', padding:'15px', borderRadius:'10px', width:'78vw', marginTop:'5px'}}>
+            <h2 style={{textAlign:'left', fontWeight:'bold', fontSize:'15px', fontfamily: 'Poppins'}}>Detail Kehadiran</h2>
+            <ListTable data={data}/>
+            </div>
+          )}
         </div>
 
         {showImageModal && (

@@ -5,7 +5,7 @@ function ListTable(props) {
   const { data } = props;
 
   return (
-    <div style={{maxHeight:"800px", overflowY:"scroll", width:"100%"}}>
+    <div style={{maxHeight:"800px", overflowY:"scroll", width:"100%",}}>
         <table className='tabel'>
           <thead>
             <tr>

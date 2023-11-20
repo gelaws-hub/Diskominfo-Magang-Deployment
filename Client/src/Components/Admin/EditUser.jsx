@@ -23,7 +23,7 @@ const EditUser = ({
     useEffect(() => {
         if (userId) {
             axiosJWTadmin
-                .get(`https://api.diskominfo-smg-magang.cloud/admin/peserta/${userId}`)
+                .get(`http://localhost:3000/admin/peserta/${userId}`)
                 .then((response) => {
                     setUserData(response.data.peserta_magang);
                 })
@@ -37,7 +37,7 @@ const EditUser = ({
         e.preventDefault();
         try {
             await axiosJWTadmin.patch(
-                `https://api.diskominfo-smg-magang.cloud/admin/peserta/${userId}/edit`,
+                `http://localhost:3000/admin/peserta/${userId}/edit`,
                 userData
             );
             updateUserData(userData);

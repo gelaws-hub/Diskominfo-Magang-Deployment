@@ -26,11 +26,9 @@ th {
   color: white;
 }
 
-/* tbody{
-  max-height: 80px;
-  overflow-y: scroll;
-  display: block;
-} */
+tbody{
+  margin-top: 50px;
+}
 
 tr:hover {
   background-color: #ddd;

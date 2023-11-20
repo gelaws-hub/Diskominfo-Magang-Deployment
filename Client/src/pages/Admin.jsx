@@ -123,7 +123,7 @@ export const Admin = () => {
 
     const exportAdmin = async () => {
         try {
-            const response = await axiosJWTadmin.get("https://api.diskominfo-smg-magang.cloud/admin/export-admin", {
+            const response = await axiosJWTadmin.get("http://localhost:3000/admin/export-admin", {
                 responseType: 'arraybuffer'
             });
             const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
@@ -142,7 +142,7 @@ export const Admin = () => {
 
     const getAdmin = async () => {
         try {
-            const response = await axiosJWTadmin.get('https://api.diskominfo-smg-magang.cloud/admin/show-admin');
+            const response = await axiosJWTadmin.get('http://localhost:3000/admin/show-admin');
             setAdmins(response.data.admin);
         } catch (error) {
             navigate('/');
@@ -160,7 +160,7 @@ export const Admin = () => {
     const saveAdmin = async (e) => {
         e.preventDefault();
         try {
-            await axiosJWTadmin.post("https://api.diskominfo-smg-magang.cloud/admin/add-admin", formData);
+            await axiosJWTadmin.post("http://localhost:3000/admin/add-admin", formData);
             getAdmin();
             setShowTaskForm(false);
             showSuccessNotification("Pengguna berhasil ditambahkan.");

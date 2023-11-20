@@ -67,30 +67,48 @@ async function doPresensi(req, res, url) {
       // const time = moment(new Date("2023-10-30T07:59:59.0000"));
       const pid = req.params.id;
       // const baseUrl = process.env.APIDISKOMINFO;
-      const baseUrl = "https://api.diskominfo-smg-magang.cloud/";
+      const baseUrl = "http://localhost:3000/";
       const fileName = url.replace('\\', '/');
       const hari = time.day();
       const currentDate = moment(time); // Menggunakan waktu dari WorldTimeAPI
   
-      const jamMulai1Jumat = 7; // Jam mulai rentang waktu pertama di hari Jumat
+      const jamMulai1Jumat = 6; // Jam mulai rentang waktu pertama di hari Jumat
       const menitMulai1Jumat = 15;
-      const jamBerakhir1Jumat = 8; // Jam berakhir rentang waktu pertama di hari Jumat
+      const jamBerakhir1Jumat = 12; // Jam berakhir rentang waktu pertama di hari Jumat
       const menitBerakhir1Jumat = 45;
   
-      const jamMulai2Jumat = 13; // Jam mulai rentang waktu kedua di hari Jumat
+      const jamMulai2Jumat = 12; // Jam mulai rentang waktu kedua di hari Jumat
       const menitMulai2Jumat = 45;
-      const jamBerakhir2Jumat = 14; // Jam berakhir rentang waktu kedua di hari Jumat
+      const jamBerakhir2Jumat = 18; // Jam berakhir rentang waktu kedua di hari Jumat
       const menitBerakhir2Jumat = 15;
+      // const jamMulai1Jumat = 7; // Jam mulai rentang waktu pertama di hari Jumat
+      // const menitMulai1Jumat = 15;
+      // const jamBerakhir1Jumat = 8; // Jam berakhir rentang waktu pertama di hari Jumat
+      // const menitBerakhir1Jumat = 45;
   
-      const jamMulai1Senmis = 7; // Jam mulai rentang waktu pertama di hari Selasa sampai Kamis
-      const menitMulai1Senmis = 45;
-      const jamBerakhir1Senmis = 8; // Jam berakhir rentang waktu pertama di hari Selasa sampai Kamis
-      const menitBerakhir1Senmis = 15;
+      // const jamMulai2Jumat = 13; // Jam mulai rentang waktu kedua di hari Jumat
+      // const menitMulai2Jumat = 45;
+      // const jamBerakhir2Jumat = 14; // Jam berakhir rentang waktu kedua di hari Jumat
+      // const menitBerakhir2Jumat = 15;
   
-      const jamMulai2Senmis = 15; // Jam mulai rentang waktu kedua di hari Selasa sampai Kamis
+      const jamMulai1Senmis = 6; // Jam mulai rentang waktu pertama di hari Selasa sampai Kamis
+      const menitMulai1Senmis = 15;
+      const jamBerakhir1Senmis = 12; // Jam berakhir rentang waktu pertama di hari Selasa sampai Kamis
+      const menitBerakhir1Senmis = 45;
+  
+      const jamMulai2Senmis = 12; // Jam mulai rentang waktu kedua di hari Selasa sampai Kamis
       const menitMulai2Senmis = 45;
-      const jamBerakhir2Senmis = 16; // Jam berakhir rentang waktu kedua di hari Selasa sampai Kamis
+      const jamBerakhir2Senmis = 18; // Jam berakhir rentang waktu kedua di hari Selasa sampai Kamis
       const menitBerakhir2Senmis = 15;
+      // const jamMulai1Senmis = 7; // Jam mulai rentang waktu pertama di hari Selasa sampai Kamis
+      // const menitMulai1Senmis = 45;
+      // const jamBerakhir1Senmis = 8; // Jam berakhir rentang waktu pertama di hari Selasa sampai Kamis
+      // const menitBerakhir1Senmis = 15;
+  
+      // const jamMulai2Senmis = 15; // Jam mulai rentang waktu kedua di hari Selasa sampai Kamis
+      // const menitMulai2Senmis = 45;
+      // const jamBerakhir2Senmis = 16; // Jam berakhir rentang waktu kedua di hari Selasa sampai Kamis
+      // const menitBerakhir2Senmis = 15;
   
       let presensi = {};
   
@@ -173,7 +191,7 @@ function doTugas(req, res, url){
     const tid = req.params.tid;
 
     // const baseUrl = process.env.APIDISKOMINFO;
-    const baseUrl = "https://api.diskominfo-smg-magang.cloud/";
+    const baseUrl = "http://localhost:3000/";
     const fileName = url.replace('\\' , '/');
 
     const tugas = {

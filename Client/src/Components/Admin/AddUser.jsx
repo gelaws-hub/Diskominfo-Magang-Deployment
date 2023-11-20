@@ -18,7 +18,7 @@ export const AddUser = () => {
     const saveUser = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("https://api.diskominfo-smg-magang.cloud/admin/peserta/add", {
+            await axios.post("http://localhost:3000/admin/peserta/add", {
                 nama,
                 asal_univ,
                 asal_jurusan,

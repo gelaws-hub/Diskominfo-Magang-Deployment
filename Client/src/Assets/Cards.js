@@ -51,7 +51,7 @@ const Cards = ({ data }) => {
 
   const cancelFile = async () => {
     try {
-      await axios.get('https://api.diskominfo-smg-magang.cloud/account/token', {
+      await axios.get('http://localhost:3000/account/token', {
         headers: {
           'role': "peserta_magang"
         },
@@ -64,7 +64,7 @@ const Cards = ({ data }) => {
 
   const uploadFile = async () => {
     try {
-      const ambilid = await axios.get('https://api.diskominfo-smg-magang.cloud/account/token', {
+      const ambilid = await axios.get('http://localhost:3000/account/token', {
         headers: {
           'role': "peserta_magang"
         },
@@ -74,7 +74,7 @@ const Cards = ({ data }) => {
       const formData = new FormData();
       formData.append('image', file);
 
-      const response = await axiosJWTuser.patch(`https://api.diskominfo-smg-magang.cloud/user/tugas/${decoded.userId}/submit/${selectedTaskID}`, formData);
+      const response = await axiosJWTuser.patch(`http://localhost:3000/user/tugas/${decoded.userId}/submit/${selectedTaskID}`, formData);
       console.log('Server Response:', response.data);
       showSuccessNotification("Berhasil Submit Gambar")
       handleClose()

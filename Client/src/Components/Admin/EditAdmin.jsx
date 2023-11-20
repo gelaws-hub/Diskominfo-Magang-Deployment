@@ -20,7 +20,7 @@ const EditAdmin = ({ adminId, handleCloseModal, showEditAdminModal, updateAdminD
     const updateAdmin = async (e) => {
         e.preventDefault();
         try {
-            await axiosJWTadmin.patch(`https://api.diskominfo-smg-magang.cloud/admin/edit-admin/${adminId}`, {
+            await axiosJWTadmin.patch(`http://localhost:3000/admin/edit-admin/${adminId}`, {
                 nama: adminData.nama,
                 username: adminData.username,
                 password: adminData.password
@@ -42,7 +42,7 @@ const EditAdmin = ({ adminId, handleCloseModal, showEditAdminModal, updateAdminD
 
     const getAdminById = async () => {
         try {
-            const response = await axiosJWTadmin.get(`https://api.diskominfo-smg-magang.cloud/admin/show-admin-id/${adminId}`);
+            const response = await axiosJWTadmin.get(`http://localhost:3000/admin/show-admin-id/${adminId}`);
             if (response.data) {
                 if (response.data.admin) {
                     const admin = response.data.admin;

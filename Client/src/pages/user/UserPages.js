@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react"
 import axios from 'axios'
 import jwt_decode from "jwt-decode"
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import imageCon from "../../Assets/balaikota.jpg"
 import logo from "../../Assets/diskominfo.png"
-// import icon from "../Assets/icon.png"
+import "../../Components/SideBar/Navbar.css"
 import penugasan from "../../Assets/image_Penugasan.svg"
 import data from "../../Assets/image_Data Presensi.svg"
 import presensi from "../../Assets/image_Lakukan Presensi.svg"
@@ -35,7 +35,12 @@ const UserPages = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [formData, setFormData] = useState( {password:""});
+  const location = useLocation();
+  const [activeLink, setActiveLink] = useState(location.pathname);
 
+  const handleNavLinkClick = (path) => {
+    setActiveLink(path);
+  };
 
   useEffect(() => {
     refreshToken();
@@ -43,7 +48,7 @@ const UserPages = () => {
 
   const refreshToken = async () => {
     try {
-      const response = await axios.get('https://api.diskominfo-smg-magang.cloud/account/token',{
+      const response = await axios.get('http://localhost:3000/account/token',{
         headers: {
           'role': "peserta_magang"
         }
@@ -110,7 +115,7 @@ const showErrorNotification = (message) => {
 };
 
   return (
-    <div className="body-main">
+    <div className="body-main" style={{backgroundColor:"#f4f4f4"}}>
       <div className={`body-area${showNav ? " body-pd" : ""}`}>
       <header className={`header${showNav ? " body-pd" : ""}`}>
           <div className="header_toggle">
@@ -145,19 +150,27 @@ const showErrorNotification = (message) => {
                 )}
               </a>
               <div className="nav_list">
-                <a href="homepage" className="nav_link">
+                <a href="homepage" target="_self"
+                  className={`nav_link ${activeLink === '/user/homepage' ? 'active' : ''}`} 
+                  onClick={() => handleNavLinkClick('user/homepage')}>
                   <i className="bi bi-house nav_icon" />
                   <span className="nav_name">Home</span>
                 </a>
-                <a href="presensi/riwayat" target="_self" className="nav_link">
+                <a href="presensi/riwayat" target="_self"
+                  className={`nav_link ${activeLink === '/user/presensi/riwayat' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('/user/presensi/riwayat')}>
                   <i className="bi bi-card-checklist nav_icon" />
                   <span className="nav_name">History Presensi</span>
                 </a>
-                <a href="presensi" target="_self" className="nav_link">
+                <a href="presensi" target="_self"
+                  className={`nav_link ${activeLink === '/user/presensi' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('/user/presensi')}>
                   <i className="bi bi-camera nav_icon" />
                   <span className="nav_name">Lakukan Presensi</span>
                 </a>
-                <a href="tugas" target="_self" className="nav_link">
+                <a href="tugas" target="_self"
+                  className={`nav_link ${activeLink === '/user/tugas' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('/user/presensi')}>
                   <i className="bi bi-list-task nav_icon" />
                   <span className="nav_name">Penugasan</span>
                 </a>

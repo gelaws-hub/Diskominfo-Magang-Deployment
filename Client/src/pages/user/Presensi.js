@@ -10,12 +10,13 @@ import axios from 'axios';
 import './UserPages.css'
 import { TabTitle } from '../../TabName';
 import { isUnauthorizedError } from '../../config/errorHandling';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { axiosJWTuser } from '../../config/axiosJWT';
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify';
 import { showSuccessNotification } from '../../Components/User/toastSuccess'
 import icon from "../../Assets/icon.png"
+import "../../Components/SideBar/Navbar.css"
 
 const Presensi = () => {
   TabTitle('Presensi');
@@ -23,7 +24,14 @@ const Presensi = () => {
   const [imageSrc, setImageSrc] = useState(null);
   const [captureTime, setCaptureTime] = useState(null);
   const [showNav, setShowNav] = useState(true);
+  const [buttontxt, settxt] = useState('Ambil foto');
   const navigate = useNavigate()
+  const location = useLocation();
+  const [activeLink, setActiveLink] = useState(location.pathname);
+
+  const handleNavLinkClick = (path) => {
+    setActiveLink(path);
+  };
 
   useEffect(() => {
 
@@ -31,7 +39,7 @@ const Presensi = () => {
 
     const startCamera = async () => {
       try {
-        await axios.get('https://api.diskominfo-smg-magang.cloud/account/token', {
+        await axios.get('http://localhost:3000/account/token', {
           headers: {
             'role': "peserta_magang"
           },
@@ -70,13 +78,27 @@ const Presensi = () => {
     // Set the captured image as a File object in state
     setImageSrc(capturedImageFile);
     setCaptureTime(new Date());
+    settxt('Foto Ulang')
     console.log('Captured Image:', capturedImageFile);
     console.log(captureTime);
   };
 
+
+  const remove = async () => {
+     
+    // Reset state and button text
+    setImageSrc(null);
+    setCaptureTime(null);
+    settxt('Ambil Foto');
+  
+    let stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    videoRef.current.srcObject = stream;
+  };
+  
+  
   const uploadImage = async () => {
     try {
-      const ambilid = await axios.get('https://api.diskominfo-smg-magang.cloud/account/token', {
+      const ambilid = await axios.get('http://localhost:3000/account/token', {
         headers: {
           'role': "peserta_magang"
         },
@@ -87,7 +109,7 @@ const Presensi = () => {
       const formData = new FormData();
       formData.append('image', imageSrc);
 
-      const response = await axiosJWTuser.patch(`https://api.diskominfo-smg-magang.cloud/user/presensi/${decoded.userId}/up`, formData, {
+      const response = await axiosJWTuser.patch(`http://localhost:3000/user/presensi/${decoded.userId}/up`, formData, {
         headers: {
           'role': "peserta_magang"
         }
@@ -103,7 +125,7 @@ const Presensi = () => {
   };
 
   return (
-    <div className="body-main">
+    <div className="body-main" style={{backgroundColor:'#f4f4f4'}}>
       <div className={`body-area${showNav ? " body-pd" : ""}`}>
         <header className={`header${showNav ? " body-pd" : ""}`}>
           <div className="header_toggle">
@@ -138,19 +160,27 @@ const Presensi = () => {
                 )}
               </a>
               <div className="nav_list">
-                <a href="homepage" className="nav_link">
+              <a href="homepage" target="_self"
+                  className={`nav_link ${activeLink === '/user/homepage' ? 'active' : ''}`} 
+                  onClick={() => handleNavLinkClick('user/homepage')}>
                   <i className="bi bi-house nav_icon" />
                   <span className="nav_name">Home</span>
                 </a>
-                <a href="presensi/riwayat" target="_self" className="nav_link">
+                <a href="presensi/riwayat" target="_self"
+                  className={`nav_link ${activeLink === '/user/presensi/riwayat' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('/user/presensi/riwayat')}>
                   <i className="bi bi-card-checklist nav_icon" />
                   <span className="nav_name">History Presensi</span>
                 </a>
-                <a href="presensi" target="_self" className="nav_link">
+                <a href="presensi" target="_self"
+                  className={`nav_link ${activeLink === '/user/presensi' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('/user/presensi')}>
                   <i className="bi bi-camera nav_icon" />
                   <span className="nav_name">Lakukan Presensi</span>
                 </a>
-                <a href="tugas" target="_self" className="nav_link">
+                <a href="tugas" target="_self"
+                  className={`nav_link ${activeLink === '/user/tugas' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('/user/presensi')}>
                   <i className="bi bi-list-task nav_icon" />
                   <span className="nav_name">Penugasan</span>
                 </a>
@@ -169,13 +199,15 @@ const Presensi = () => {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
           <h1 style={{ marginBottom: "10px" }}>Silahkan Presensi</h1>
           <div> <Dates style={{ display: 'flex', alignItems: 'end' }} /> </div>
-          <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', alignItems: 'start', justifyContent: 'flex-start' }}>
+          <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor:'#ffffff', padding:'15px', borderRadius:'10px' }}>
             <div style={{ display: 'flex', }}>
-              <video ref={videoRef} autoPlay style={{ width: '40vw', height: 'auto' }} />
-              {imageSrc && <img src={URL.createObjectURL(imageSrc)} alt="Selfie" style={{ width: '40vw', height: 'auto', marginLeft: "10px" }} />}
+              {imageSrc ? <img src={URL.createObjectURL(imageSrc)} alt="Selfie" style={{ width: '40vw', height: 'auto'}} /> : <video ref={videoRef} autoPlay style={{ width: '40vw', height: 'auto' , transition:'.5s'}}/> }
+              {/* <video ref={videoRef} autoPlay style={{ width: '40vw', height: 'auto' }} />
+              {imageSrc && <img src={URL.createObjectURL(imageSrc)} alt="Selfie" style={{ width: '40vw', height: 'auto'}} />} */}
             </div>
             <div style={{ display: 'flex', marginTop: 10 }}>
-              <button onClick={capture} style={{ height: "40px", width: "100px", borderRadius: "10px" }}>Ambil Foto</button>
+            {imageSrc ? <button onClick={remove} style={{ height: "40px", width: "100px", borderRadius: "10px" }}>{buttontxt}</button> : <button onClick={capture} style={{ height: "40px", width: "100px", borderRadius: "10px" }}>{buttontxt}</button> }
+
               <button onClick={uploadImage} style={{ marginLeft: 10, height: "40px", width: "120px", borderRadius: "10px" }}>Upload Foto</button>
             </div>
           </div>
