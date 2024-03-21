@@ -125,7 +125,7 @@ function Tugas() {
             {" "}
             <Dates />{" "}
           </div>
-          <h1 style={{ marginBottom: "16px" }}>Tugas</h1>
+          <h1 style={{ marginBottom: "16px", fontSize: "24px", fontWeight: "bold" }}>Tugas</h1>
           {!cardData ? (
             <img src={load}  alt=""/>
           ) : (
