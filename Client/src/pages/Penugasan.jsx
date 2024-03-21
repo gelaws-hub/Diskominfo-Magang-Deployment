@@ -108,13 +108,17 @@ export const Penugasan = () => {
       const dateTimeString = data.datetime;
       const dateTime = new Date(dateTimeString);
 
-      const dateOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
-      const timeOptions = { hour: '2-digit', minute: '2-digit' };
+      const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
+      const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
 
       const date = dateTime.toLocaleDateString(undefined, dateOptions);
       const time = dateTime.toLocaleTimeString(undefined, timeOptions);
 
-      const dateTimeStringFormatted = `${date} - ${time}`;
+      // Memformat tanggal menjadi dd/mm/yyyy
+      const [month, day, year] = date.split('/');
+      const formattedDate = `${day}/${month}/${year}`;
+
+      const dateTimeStringFormatted = `${formattedDate} - ${time}`;
       setTimeNow(dateTimeStringFormatted);
     } catch (error) {
       console.error('Error fetching current time:', error);

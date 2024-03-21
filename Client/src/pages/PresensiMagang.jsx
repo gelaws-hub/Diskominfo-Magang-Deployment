@@ -94,13 +94,17 @@ export const PresensiMagang = () => {
       const dateTimeString = data.datetime;
       const dateTime = new Date(dateTimeString);
 
-      const dateOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
-      const timeOptions = { hour: '2-digit', minute: '2-digit' };
+      const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
+      const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
 
       const date = dateTime.toLocaleDateString(undefined, dateOptions);
       const time = dateTime.toLocaleTimeString(undefined, timeOptions);
 
-      const dateTimeStringFormatted = `${date} - ${time}`;
+      // Memecah tanggal menjadi bagian-bagian untuk disusun kembali sesuai dengan format yang diinginkan
+      const [month, day, year] = date.split('/');
+      const formattedDate = `${day}/${month}/${year}`;
+
+      const dateTimeStringFormatted = `${formattedDate} - ${time}`;
       setCurrentTime(dateTimeStringFormatted);
     } catch (error) {
       console.error('Error fetching current time:', error);
@@ -251,11 +255,11 @@ export const PresensiMagang = () => {
             <div className="column">
               <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: 25, marginBottom: 20 }}>Presensi Magang</p>
               <div className="cards">
-                <div className="card-1" style={{ backgroundColor: "#4CAF50", display: "flex", flexDirection: "column", justifyContent: "center", textAlign: "center" }}>
+                <div className="card-1" style={{ backgroundColor: "green", display: "flex", flexDirection: "column", justifyContent: "center", textAlign: "center" }}>
                   <p style={{ color: "white" }}>Total Hadir Hari Ini</p>
                   <p style={{ color: "white" }}>{totalAttendance}</p>
                 </div>
-                <div className="card-2" style={{ backgroundColor: "#FF5733", display: "flex", flexDirection: "column", justifyContent: "center", textAlign: "center" }}>
+                <div className="card-2" style={{ backgroundColor: "red", display: "flex", flexDirection: "column", justifyContent: "center", textAlign: "center" }}>
                   <p style={{ color: "white" }}>Tanggal Hari Ini</p>
                   <p style={{ color: "white" }}>{currentTime}</p>
                 </div>
