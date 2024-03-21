@@ -146,4 +146,7 @@
         justify-content: center;
         margin: 10px 0;
     }
+    .button-presensi {
+        margin-right: 5px !important;
+    }
 }

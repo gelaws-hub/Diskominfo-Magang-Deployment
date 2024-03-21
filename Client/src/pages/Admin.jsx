@@ -12,6 +12,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import EditAdmin from '../Components/Admin/EditAdmin';
 import icon from "../Assets/icon.png";
 import "../Components/SideBar/Navbar.css"
+import icon_edit from "../Assets/icon_edit.svg"
+import icon_bars from "../Assets/icon_3bars.svg"
+import icon_admin from "../Assets/icon_usercircle.svg"
+import icon_peserta from "../Assets/icon_peserta.svg"
+import icon_homepage from "../Assets/icon_homepage.svg"
+import icon_presensi from "../Assets/icon_presensi.svg"
+import icon_penugasan from "../Assets/icon_penugasan.svg"
 
 export const Admin = () => {
     TabTitle('Admin');
@@ -205,7 +212,7 @@ export const Admin = () => {
                                         style={{ width: "120px", height: "auto" }}
                                     />
                                 ) : (
-                                    <i className="bi bi-border-width nav_logo-icon" />
+                                    <img src={icon_bars} alt="" className="nav_icon" />
                                 )}
                             </a>
                             <div className="nav_list">
@@ -215,7 +222,7 @@ export const Admin = () => {
                                     className={`nav_link ${activeLink === '/homepage' ? 'active' : ''}`}
                                     onClick={() => handleNavLinkClick('homepage')}
                                 >
-                                    <i className="bi bi-house nav_icon" />
+                                    <img src={icon_homepage} alt="" className="nav_icon" />
                                     <span className="nav_name">Home</span>
                                 </a>
                                 <a
@@ -224,7 +231,7 @@ export const Admin = () => {
                                     className={`nav_link ${activeLink === '/admin' ? 'active' : ''}`}
                                     onClick={() => handleNavLinkClick('admin')}
                                 >
-                                    <i className="bi bi-person-check-fill nav_icon" />
+                                    <img src={icon_admin} alt="" className="nav_icon" />
                                     <span className="nav_name">Admin</span>
                                 </a>
                                 <a
@@ -233,7 +240,7 @@ export const Admin = () => {
                                     className={`nav_link ${activeLink === '/peserta' ? 'active' : ''}`}
                                     onClick={() => handleNavLinkClick('peserta')}
                                 >
-                                    <i className="bi bi-person nav_icon" />
+                                    <img src={icon_peserta} alt="" className="nav_icon" />
                                     <span className="nav_name">Peserta</span>
                                 </a>
                                 <a
@@ -242,7 +249,7 @@ export const Admin = () => {
                                     className={`nav_link ${activeLink === '/presensi' ? 'active' : ''}`}
                                     onClick={() => handleNavLinkClick('presensi')}
                                 >
-                                    <i className="bi bi-person-check nav_icon" />
+                                    <img src={icon_presensi} alt="" className="nav_icon" />
                                     <span className="nav_name">Presensi Magang</span>
                                 </a>
                                 <a
@@ -251,7 +258,7 @@ export const Admin = () => {
                                     className={`nav_link ${activeLink === '/penugasan' ? 'active' : ''}`}
                                     onClick={() => handleNavLinkClick('penugasan')}
                                 >
-                                    <i className="bi bi-list-task nav_icon" />
+                                    <img src={icon_penugasan} alt="" className="nav_icon" />
                                     <span className="nav_name">Penugasan</span>
                                 </a>
                             </div>
@@ -305,7 +312,7 @@ export const Admin = () => {
                                             <th>No</th>
                                             <th>Nama</th>
                                             <th>Username</th>
-                                            <th>Actions</th>
+                                            <th>Opsi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -316,10 +323,16 @@ export const Admin = () => {
                                                 <td>{admin.username}</td>
                                                 <td>
                                                     <button
-                                                        className="button is-small is-info"
+                                                        className="button is-small"
+                                                        style={{ background: 'none', border: 'none' }}
                                                         onClick={() => handleOpenEditAdminModal(admin.id)}
                                                     >
-                                                        Edit
+                                                        <img
+                                                            className='icon_button'
+                                                            src={icon_edit}
+                                                            alt=""
+                                                            style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                                                        />
                                                     </button>
                                                 </td>
                                             </tr>

@@ -1,17 +1,25 @@
-import { axiosJWTadmin } from "../config/axiosJWT";
-import { useNavigate, useLocation } from "react-router-dom";
-import React, { useState, useEffect } from "react";
-import logo from "../Assets/diskominfo.png";
-import "./Peserta.css";
-import { Button, Modal, Form, Table } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
+import { axiosJWTadmin } from "../config/axiosJWT"
+import { useNavigate, useLocation } from "react-router-dom"
+import React, { useState, useEffect } from "react"
+import logo from "../Assets/diskominfo.png"
+import "./Peserta.css"
+import { Button, Modal, Form, Table } from "react-bootstrap"
+import "bootstrap/dist/css/bootstrap.css"
+import "bootstrap-icons/font/bootstrap-icons.css"
 import "../Components/SideBar/Navbar.css"
-import { TabTitle } from "../TabName";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import EditUser from "../Components/Admin/EditUser";
+import { TabTitle } from "../TabName"
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import EditUser from "../Components/Admin/EditUser"
+import icon_delete from "../Assets/icon_trash.svg"
+import icon_edit from "../Assets/icon_edit.svg"
 import icon from "../Assets/icon.png"
+import icon_bars from "../Assets/icon_3bars.svg"
+import icon_admin from "../Assets/icon_usercircle.svg"
+import icon_peserta from "../Assets/icon_peserta.svg"
+import icon_homepage from "../Assets/icon_homepage.svg"
+import icon_presensi from "../Assets/icon_presensi.svg"
+import icon_penugasan from "../Assets/icon_penugasan.svg"
 
 export const Peserta = () => {
   TabTitle("Peserta");
@@ -406,7 +414,7 @@ export const Peserta = () => {
                     style={{ width: "120px", height: "auto" }}
                   />
                 ) : (
-                  <i className="bi bi-border-width nav_logo-icon" />
+                  <img src={icon_bars} alt="" className="nav_icon" />
                 )}
               </a>
               <div className="nav_list">
@@ -416,7 +424,7 @@ export const Peserta = () => {
                   className={`nav_link ${activeLink === '/homepage' ? 'active' : ''}`}
                   onClick={() => handleNavLinkClick('homepage')}
                 >
-                  <i className="bi bi-house nav_icon" />
+                  <img src={icon_homepage} alt="" className="nav_icon" />
                   <span className="nav_name">Home</span>
                 </a>
                 <a
@@ -425,7 +433,7 @@ export const Peserta = () => {
                   className={`nav_link ${activeLink === '/admin' ? 'active' : ''}`}
                   onClick={() => handleNavLinkClick('admin')}
                 >
-                  <i className="bi bi-person-check-fill nav_icon" />
+                  <img src={icon_admin} alt="" className="nav_icon" />
                   <span className="nav_name">Admin</span>
                 </a>
                 <a
@@ -434,7 +442,7 @@ export const Peserta = () => {
                   className={`nav_link ${activeLink === '/peserta' ? 'active' : ''}`}
                   onClick={() => handleNavLinkClick('peserta')}
                 >
-                  <i className="bi bi-person nav_icon" />
+                  <img src={icon_peserta} alt="" className="nav_icon" />
                   <span className="nav_name">Peserta</span>
                 </a>
                 <a
@@ -443,7 +451,7 @@ export const Peserta = () => {
                   className={`nav_link ${activeLink === '/presensi' ? 'active' : ''}`}
                   onClick={() => handleNavLinkClick('presensi')}
                 >
-                  <i className="bi bi-person-check nav_icon" />
+                  <img src={icon_presensi} alt="" className="nav_icon" />
                   <span className="nav_name">Presensi Magang</span>
                 </a>
                 <a
@@ -452,7 +460,7 @@ export const Peserta = () => {
                   className={`nav_link ${activeLink === '/penugasan' ? 'active' : ''}`}
                   onClick={() => handleNavLinkClick('penugasan')}
                 >
-                  <i className="bi bi-list-task nav_icon" />
+                  <img src={icon_penugasan} alt="" className="nav_icon" />
                   <span className="nav_name">Penugasan</span>
                 </a>
               </div>
@@ -563,7 +571,7 @@ export const Peserta = () => {
                       <th>Tanggal Mulai</th>
                       <th>Tanggal Selesai</th>
                       <th>Status Aktif</th>
-                      <th>Actions</th>
+                      <th>Opsi</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -590,18 +598,28 @@ export const Peserta = () => {
                           <td>{user.status_aktif ? "Aktif" : "Tidak Aktif"}</td>
                           <td>
                             <button
-                              className="button is-small is-info"
-                              style={{ minWidth: "60px" }}
+                              className="button is-small"
+                              style={{ background: 'none', border: 'none' }}
                               onClick={() => handleOpenEditUserModal(user.id)}
                             >
-                              Edit
+                              <img
+                                className="icon_button_peserta"
+                                src={icon_edit}
+                                alt=""
+                                style={{ width: '20px', height: '20px', cursor: 'pointer', marginRight: 5 }}
+                              />
                             </button>
                             <button
-                              style={{ minWidth: "60px" }}
+                              className="button is-small"
+                              style={{ background: 'none', border: 'none' }}
                               onClick={() => deleteUser(user.id)}
-                              className="button is-small is-danger"
                             >
-                              Delete
+                              <img
+                                className="icon_button_peserta"
+                                src={icon_delete}
+                                alt=""
+                                style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                              />
                             </button>
                           </td>
                         </tr>

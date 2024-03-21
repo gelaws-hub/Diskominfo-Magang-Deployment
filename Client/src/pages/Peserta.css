@@ -24,6 +24,11 @@
     margin: 10px 0px;
 }
 
+.icon_button_peserta {
+    width: 15px !important;
+    height: 15px !important;
+}
+
 .table-container-peserta {
     overflow-x: auto;
 }
@@ -38,7 +43,7 @@
 .custom-table-peserta th,
 .custom-table-peserta td {
     padding: 12px 15px;
-    text-align: left;
+    text-align: center !important;
     border-bottom: 1px solid #ddd;
 }
 

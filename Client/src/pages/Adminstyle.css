@@ -24,7 +24,7 @@
 .custom-table th,
 .custom-table td {
     padding: 12px 15px;
-    text-align: left;
+    text-align: center !important;
     border-bottom: 1px solid #ddd;
 }
 
@@ -141,5 +141,11 @@
         padding: 10px;
         border-radius: 5px;
         max-width: 150px;
+    }
+    .button {
+        padding: 0 !important;
+    }
+    .button.is-success {
+        padding: 0 10px !important;
     }
 }

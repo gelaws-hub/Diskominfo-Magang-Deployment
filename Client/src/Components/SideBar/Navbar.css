@@ -6,7 +6,7 @@
     --first-color: #F7444E;
     --first-color-light: #F7F8F3;
     --white-color: #F7F6FB;
-    --active-color: rgb(0, 0, 0);
+    --active-color: rgb(255, 0, 0);
     --body-font: 'Nunito', sans-serif;
     --normal-font-size: 1rem;
     --z-fixed: 100
@@ -61,10 +61,11 @@
     left: -30%;
     width: var(--nav-width);
     height: 100vh;
-    background-color: var(--first-color);
+    background-color: #fff;
     padding: .5rem 1rem 0 0;
     transition: .5s;
-    z-index: var(--z-fixed)
+    z-index: var(--z-fixed);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .nav {
@@ -106,6 +107,9 @@
 }
 
 .nav_icon {
+    width: 20px;
+    height: 20px;
+    color: black;
     font-size: 1.25rem;
 }
 
@@ -130,13 +134,19 @@
     content: '';
     position: absolute;
     left: 0;
-    width: 2px;
+    width: 100%;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
     height: 32px;
-    background-color: var(--active-color)
+    background-color: rgba(17, 170, 225, 0.342)
 }
 
 .height-100 {
     height: 100vh
+}
+
+.nav_name {
+    color: black;
 }
 
 @media screen and (max-width: 767px) {

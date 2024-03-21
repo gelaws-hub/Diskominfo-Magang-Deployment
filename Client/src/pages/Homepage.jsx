@@ -2,9 +2,15 @@ import React, { useState, useEffect } from "react"
 import axios from 'axios'
 import jwt_decode from "jwt-decode"
 import { useNavigate, useLocation } from 'react-router-dom'
-import imageCon from "../Assets/balaikota.jpg"
 import logo from "../Assets/diskominfo.png"
+import imageCon from "../Assets/image_balaikota.png"
 import icon from "../Assets/icon.png"
+import icon_bars from "../Assets/icon_3bars.svg"
+import icon_admin from "../Assets/icon_usercircle.svg"
+import icon_peserta from "../Assets/icon_peserta.svg"
+import icon_homepage from "../Assets/icon_homepage.svg"
+import icon_presensi from "../Assets/icon_presensi.svg"
+import icon_penugasan from "../Assets/icon_penugasan.svg"
 import penugasan from "../Assets/image_Buat Penugasan.svg"
 import peserta from "../Assets/image_Peserta magang.svg"
 import "bootstrap/dist/css/bootstrap.css"
@@ -28,12 +34,12 @@ const Homepage = () => {
   useEffect(() => {
     refreshToken();
     setActiveLink(location.pathname);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   const refreshToken = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/account/token',{
+      const response = await axios.get('http://localhost:3000/account/token', {
         headers: {
           'role': "admin"
         },
@@ -80,7 +86,7 @@ const Homepage = () => {
                     style={{ width: "120px", height: "auto" }}
                   />
                 ) : (
-                  <i className="bi bi-border-width nav_logo-icon" />
+                  <img src={icon_bars} alt="" className="nav_icon" />
                 )}
               </a>
               <div className="nav_list">
@@ -90,16 +96,16 @@ const Homepage = () => {
                   className={`nav_link ${activeLink === '/homepage' ? 'active' : ''}`}
                   onClick={() => handleNavLinkClick('homepage')}
                 >
-                  <i className="bi bi-house nav_icon" />
+                  <img src={icon_homepage} alt="" className="nav_icon" />
                   <span className="nav_name">Home</span>
                 </a>
-                <a 
-                  href="admin" 
-                  target="_self" 
+                <a
+                  href="admin"
+                  target="_self"
                   className={`nav_link ${activeLink === '/admin' ? 'active' : ''}`}
                   onClick={() => handleNavLinkClick('admin')}
                 >
-                  <i className="bi bi-person-check-fill nav_icon" />
+                  <img src={icon_admin} alt="" className="nav_icon" />
                   <span className="nav_name">Admin</span>
                 </a>
                 <a
@@ -108,7 +114,7 @@ const Homepage = () => {
                   className={`nav_link ${activeLink === '/peserta' ? 'active' : ''}`}
                   onClick={() => handleNavLinkClick('peserta')}
                 >
-                  <i className="bi bi-person nav_icon" />
+                  <img src={icon_peserta} alt="" className="nav_icon" />
                   <span className="nav_name">Peserta</span>
                 </a>
                 <a
@@ -117,7 +123,7 @@ const Homepage = () => {
                   className={`nav_link ${activeLink === '/presensi' ? 'active' : ''}`}
                   onClick={() => handleNavLinkClick('presensi')}
                 >
-                  <i className="bi bi-person-check nav_icon" />
+                  <img src={icon_presensi} alt="" className="nav_icon" />
                   <span className="nav_name">Presensi Magang</span>
                 </a>
                 <a
@@ -126,7 +132,7 @@ const Homepage = () => {
                   className={`nav_link ${activeLink === '/penugasan' ? 'active' : ''}`}
                   onClick={() => handleNavLinkClick('penugasan')}
                 >
-                  <i className="bi bi-list-task nav_icon" />
+                  <img src={icon_penugasan} alt="" className="nav_icon" />
                   <span className="nav_name">Penugasan</span>
                 </a>
               </div>
@@ -143,22 +149,24 @@ const Homepage = () => {
         </div>
         <div className="pt-4 pb-4">
           <div className="homepage-container">
-            <div className="image-container">
-              <img className="background-home" src={imageCon} alt='' />
-            </div>
-            <div className="account-info-container">
-              <div className="info-box">
-                <div className="user-info">
-                  <p className="user-info-1">Selamat Datang,</p>
-                  <p className="user-info-1">{nama}</p>
-                </div>
-              </div>
-              <div className='space'></div>
-              <div className="user-image">
-                <img src={icon} alt="" />
-              </div>
+            <div className="image-container-admin">
+              <img className="background-home-admin" src={imageCon} alt='' />
             </div>
           </div>
+
+          <div className="account-info-container">
+            <div className="info-box">
+              <div className="user-info">
+                <p className="user-info-1" style={{ fontSize: 16 }}>Selamat Datang,</p>
+                <p className="user-info-1" style={{ fontSize: 16 }}>{nama} | Admin</p>
+              </div>
+            </div>
+            <div className='space'></div>
+            <div className="user-image">
+              <img src={icon} alt="" />
+            </div>
+          </div>
+
           <div className="action-buttons">
             <a href="/peserta">
               <img src={peserta} alt="" />
