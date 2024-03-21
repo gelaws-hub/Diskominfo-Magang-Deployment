@@ -1,24 +1,25 @@
 {
   "files": {
-    "main.css": "/static/css/main.d7c59f10.css",
-    "main.js": "/static/js/main.dd1e4e31.js",
+    "main.css": "/static/css/main.f860f06d.css",
+    "main.js": "/static/js/main.14bdac97.js",
     "static/media/login_page.jpg": "/static/media/login_page.74a005b8e201248c8d8d.jpg",
-    "static/media/image_Statistik.svg": "/static/media/image_Statistik.df5aef705765c7e64c27070312c16f2a.svg",
+    "static/media/Loading_Screen.gif": "/static/media/Loading_Screen.219f802a7ef6d263af5e.gif",
     "static/media/bootstrap-icons.woff?": "/static/media/bootstrap-icons.449ad8adf6ae0424b7ed.woff",
     "static/media/bootstrap-icons.woff2?": "/static/media/bootstrap-icons.dea24bf5a7646d8b84e7.woff2",
     "static/media/image_Data Presensi.svg": "/static/media/image_Data Presensi.e2557fbca89355eba6fa96734030bbe1.svg",
     "static/media/balaikota.jpg": "/static/media/balaikota.03b88f514e39bab42bac.jpg",
     "static/media/image_Lakukan Presensi.svg": "/static/media/image_Lakukan Presensi.8578a3f10a051a54e11036968b7b145b.svg",
-    "static/media/image_Penugasan.svg": "/static/media/image_Penugasan.81c0c6193607419bdfc497ee97c8603c.svg",
-    "static/media/image_Buat Penugasan.svg": "/static/media/image_Buat Penugasan.9cc711b6332099276971c4adbf9093b0.svg",
-    "static/media/image_Peserta magang.svg": "/static/media/image_Peserta magang.9a87be33e6c3b6e0e22296c0c8067c7b.svg",
+    "static/media/image_Buat Penugasan.svg": "/static/media/image_Buat Penugasan.5d0500436347d942a9deeb6f477c0e74.svg",
+    "static/media/image_Penugasan.svg": "/static/media/image_Penugasan.5d0500436347d942a9deeb6f477c0e74.svg",
+    "static/media/image_Peserta magang.svg": "/static/media/image_Peserta magang.f0cf7515f8caaa41ade2154b38730a9f.svg",
     "static/media/diskominfo.png": "/static/media/diskominfo.946dd116da78c5d819bd.png",
+    "static/media/icon.png": "/static/media/icon.93aa3bae526504e636b5.png",
     "index.html": "/index.html",
-    "main.d7c59f10.css.map": "/static/css/main.d7c59f10.css.map",
-    "main.dd1e4e31.js.map": "/static/js/main.dd1e4e31.js.map"
+    "main.f860f06d.css.map": "/static/css/main.f860f06d.css.map",
+    "main.14bdac97.js.map": "/static/js/main.14bdac97.js.map"
   },
   "entrypoints": [
-    "static/css/main.d7c59f10.css",
-    "static/js/main.dd1e4e31.js"
+    "static/css/main.f860f06d.css",
+    "static/js/main.14bdac97.js"
   ]
 }

@@ -7,13 +7,15 @@ import "bootstrap-icons/font/bootstrap-icons.css"
 import "../../Components/SideBar/Navbar.css"
 import jwt_decode from "jwt-decode"
 import axios from 'axios';
+import './UserPages.css'
 import { TabTitle } from '../../TabName';
-import { isUnauthorizedError }  from '../../config/errorHandling';
+import { isUnauthorizedError } from '../../config/errorHandling';
 import { useNavigate } from 'react-router-dom';
 import { axiosJWTuser } from '../../config/axiosJWT';
 import 'react-toastify/dist/ReactToastify.css'
-import { ToastContainer} from 'react-toastify';
-import {showSuccessNotification} from '../../Components/User/toastSuccess'
+import { ToastContainer } from 'react-toastify';
+import { showSuccessNotification } from '../../Components/User/toastSuccess'
+import icon from "../../Assets/icon.png"
 
 const Presensi = () => {
   TabTitle('Presensi');
@@ -24,7 +26,7 @@ const Presensi = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
- 
+
     let stream;
 
     const startCamera = async () => {
@@ -37,9 +39,9 @@ const Presensi = () => {
         stream = await navigator.mediaDevices.getUserMedia({ video: true });
         videoRef.current.srcObject = stream;
       } catch (error) {
-        if (isUnauthorizedError(error)){
+        if (isUnauthorizedError(error)) {
           navigate('/');
-      }
+        }
         console.error('Error accessing camera:', error);
       }
     };
@@ -53,13 +55,14 @@ const Presensi = () => {
         tracks.forEach(track => track.stop());
       }
     };
-  }, []); // Empty dependency array ensures that this effect runs once when the component mounts
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const capture = async () => {
     const canvas = document.createElement('canvas');
     canvas.width = videoRef.current.videoWidth;
     canvas.height = videoRef.current.videoHeight;
-    const context = canvas.getContext('2d'); 
+    const context = canvas.getContext('2d');
     context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
     const capturedImageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg'));
     const capturedImageFile = new File([capturedImageBlob], 'captured-image.jpg', { type: 'image/jpeg' });
@@ -68,6 +71,7 @@ const Presensi = () => {
     setImageSrc(capturedImageFile);
     setCaptureTime(new Date());
     console.log('Captured Image:', capturedImageFile);
+    console.log(captureTime);
   };
 
   const uploadImage = async () => {
@@ -91,9 +95,9 @@ const Presensi = () => {
       console.log('Server Response:', response.data);
       showSuccessNotification("Berhasil Melakukan Presensi")
     } catch (error) {
-      if (isUnauthorizedError(error)){
+      if (isUnauthorizedError(error)) {
         navigate('/');
-    }
+      }
       window.alert("Gagal Melakukan Presensi")
     }
   };
@@ -110,7 +114,7 @@ const Presensi = () => {
           </div>
           <div className="header_img">
             <img
-              src="https://reqres.in/img/faces/5-image.jpg"
+              src={icon}
               alt=""
             />
           </div>
@@ -124,42 +128,30 @@ const Presensi = () => {
                 className="nav_logo"
               >
                 {showNav ? (
-                  <img src={logo} alt="" style={{ width: '150px', height: 'auto' }} />
+                  <img
+                    src={logo}
+                    alt=""
+                    style={{ width: "120px", height: "auto" }}
+                  />
                 ) : (
                   <i className="bi bi-border-width nav_logo-icon" />
                 )}
               </a>
               <div className="nav_list">
-                <a
-                  href="homepage"
-                  target="_self"
-                  className="nav_link"
-                >
+                <a href="homepage" className="nav_link">
                   <i className="bi bi-house nav_icon" />
                   <span className="nav_name">Home</span>
                 </a>
-                <a
-                  href="presensi/riwayat"
-                  target="_self"
-                  className="nav_link"
-                >
-                  <i className="bi bi-list-task nav_icon" />
+                <a href="presensi/riwayat" target="_self" className="nav_link">
+                  <i className="bi bi-card-checklist nav_icon" />
                   <span className="nav_name">History Presensi</span>
                 </a>
-                <a
-                  href="presensi"
-                  target="_self"
-                  className="nav_link"
-                >
+                <a href="presensi" target="_self" className="nav_link">
                   <i className="bi bi-camera nav_icon" />
                   <span className="nav_name">Lakukan Presensi</span>
                 </a>
-                <a
-                  href="tugas"
-                  target="_self"
-                  className="nav_link"
-                >
-                  <i className="bi bi-card-checklist nav_icon" />
+                <a href="tugas" target="_self" className="nav_link">
+                  <i className="bi bi-list-task nav_icon" />
                   <span className="nav_name">Penugasan</span>
                 </a>
               </div>
@@ -177,10 +169,10 @@ const Presensi = () => {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
           <h1 style={{ marginBottom: "10px" }}>Silahkan Presensi</h1>
           <div> <Dates style={{ display: 'flex', alignItems: 'end' }} /> </div>
-          <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', alignItems: 'start', justifyContent:'flex-start' }}>
-            <div style={{ display: 'flex',}}>
+          <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', alignItems: 'start', justifyContent: 'flex-start' }}>
+            <div style={{ display: 'flex', }}>
               <video ref={videoRef} autoPlay style={{ width: '40vw', height: 'auto' }} />
-              {imageSrc && <img src={URL.createObjectURL(imageSrc)} alt="Selfie" style={{ width: '40vw', height: 'auto' , marginLeft:"10px" }} />}
+              {imageSrc && <img src={URL.createObjectURL(imageSrc)} alt="Selfie" style={{ width: '40vw', height: 'auto', marginLeft: "10px" }} />}
             </div>
             <div style={{ display: 'flex', marginTop: 10 }}>
               <button onClick={capture} style={{ height: "40px", width: "100px", borderRadius: "10px" }}>Ambil Foto</button>
@@ -189,7 +181,7 @@ const Presensi = () => {
           </div>
         </div>
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 };

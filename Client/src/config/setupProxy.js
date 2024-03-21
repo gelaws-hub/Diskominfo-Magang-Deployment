@@ -4,7 +4,7 @@ module.exports = function (app) {
     app.use(
         '/api',
         createProxyMiddleware({
-            target: 'http://worldtimeapi.org',
+            target: 'https://worldtimeapi.org',
             changeOrigin: true,
         })
     );

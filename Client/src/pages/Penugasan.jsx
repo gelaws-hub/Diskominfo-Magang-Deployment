@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import logo from "../Assets/diskominfo.png";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "../Components/SideBar/Style.css";
+import "../Components/SideBar/Navbar.css"
 import "./Penugasan.css";
 import { axiosJWTadmin } from "../config/axiosJWT";
 import { TabTitle } from "../TabName";
+import ImageOverlay from "../Components/Admin/ImageOverlay";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import icon from "../Assets/icon.png"
+import icon_bars from "../Assets/icon_3bars.svg"
+import icon_admin from "../Assets/icon_usercircle.svg"
+import icon_peserta from "../Assets/icon_peserta.svg"
+import icon_homepage from "../Assets/icon_homepage.svg"
+import icon_presensi from "../Assets/icon_presensi.svg"
+import icon_penugasan from "../Assets/icon_penugasan.svg"
 
-function Penugasan() {
+export const Penugasan = () => {
   TabTitle("Penugasan");
   const [showNav, setShowNav] = useState(true);
   const [activeTasks, setActiveTasks] = useState(0);
@@ -19,6 +29,17 @@ function Penugasan() {
   const [tugas, setTugas] = useState([]);
   const [idtugas, setIdTugas] = useState('');
   const navigate = useNavigate();
+
+  const [showImageOverlay, setShowImageOverlay] = useState(false);
+  const [selectedImageUrl, setSelectedImageUrl] = useState('');
+  const [selectedItemIndex, setSelectedItemIndex] = useState(null);
+
+  const location = useLocation();
+  const [activeLink, setActiveLink] = useState(location.pathname);
+  const handleNavLinkClick = (path) => {
+    setActiveLink(path);
+  };
+
 
   const [formData, setFormData] = useState({
     judul: "",
@@ -82,18 +103,22 @@ function Penugasan() {
 
   const fetchCurrentTime = async () => {
     try {
-      const response = await fetch('http://worldtimeapi.org/api/timezone/Asia/Jakarta');
+      const response = await fetch('https://worldtimeapi.org/api/timezone/Asia/Jakarta');
       const data = await response.json();
       const dateTimeString = data.datetime;
       const dateTime = new Date(dateTimeString);
 
-      const dateOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
-      const timeOptions = { hour: '2-digit', minute: '2-digit' };
+      const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
+      const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
 
       const date = dateTime.toLocaleDateString(undefined, dateOptions);
       const time = dateTime.toLocaleTimeString(undefined, timeOptions);
 
-      const dateTimeStringFormatted = `${date} - ${time}`;
+      // Memformat tanggal menjadi dd/mm/yyyy
+      const [month, day, year] = date.split('/');
+      const formattedDate = `${day}/${month}/${year}`;
+
+      const dateTimeStringFormatted = `${formattedDate} - ${time}`;
       setTimeNow(dateTimeStringFormatted);
     } catch (error) {
       console.error('Error fetching current time:', error);
@@ -117,6 +142,7 @@ function Penugasan() {
       await axiosJWTadmin.post("http://localhost:3000/admin/tugas/add", formData);
       getTugas();
       setShowTaskForm(false);
+      toast.success("Tugas berhasil ditambahkan!", { position: "top-right" });
     } catch (error) {
       navigate("/");
     }
@@ -133,13 +159,16 @@ function Penugasan() {
 
   const [statustugas, setStatusTugas] = useState([]);
 
-  const getTugasById = async (taskId) => {
+  const getTugasById = async (taskId, index) => {
     try {
       const response = await axiosJWTadmin.get(
         `http://localhost:3000/admin/tugas/${taskId}`
       );
       setStatusTugas(response.data.tugas);
+      setIdTugas(taskId);
+      setSelectedItemIndex(index);
     } catch (error) {
+      navigate("/");
     }
   };
 
@@ -163,7 +192,7 @@ function Penugasan() {
           </div>
           <div className="header_img">
             <img
-              src="https://reqres.in/img/faces/5-image.jpg"
+              src={icon}
               alt="Clue Mediator"
             />
           </div>
@@ -171,41 +200,74 @@ function Penugasan() {
         <div className={`l-navbar${showNav ? " show" : ""}`}>
           <nav className="nav">
             <div>
-              <a href="/homepage" target="_self" className="nav_logo">
+              <a
+                href="/homepage"
+                target="_self"
+                className="nav_logo"
+              >
                 {showNav ? (
                   <img
                     src={logo}
                     alt=""
-                    style={{ width: "150px", height: "auto" }}
+                    style={{ width: "120px", height: "auto" }}
                   />
                 ) : (
-                  <i className="bi bi-border-width nav_logo-icon" />
+                  <img src={icon_bars} alt="" className="nav_icon" />
                 )}
               </a>
               <div className="nav_list">
-                <a href="homepage" target="_self" className="nav_link">
-                  <i className="bi bi-house nav_icon" />
+                <a
+                  href="homepage"
+                  target="_self"
+                  className={`nav_link ${activeLink === '/homepage' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('homepage')}
+                >
+                  <img src={icon_homepage} alt="" className="nav_icon" />
                   <span className="nav_name">Home</span>
                 </a>
-                <a href="admin" target="_self" className="nav_link">
-                  <i className="bi bi-person-check-fill nav_icon" />
+                <a
+                  href="admin"
+                  target="_self"
+                  className={`nav_link ${activeLink === '/admin' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('admin')}
+                >
+                  <img src={icon_admin} alt="" className="nav_icon" />
                   <span className="nav_name">Admin</span>
                 </a>
-                <a href="peserta" target="_self" className="nav_link">
-                  <i className="bi bi-person nav_icon" />
+                <a
+                  href="peserta"
+                  target="_self"
+                  className={`nav_link ${activeLink === '/peserta' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('peserta')}
+                >
+                  <img src={icon_peserta} alt="" className="nav_icon" />
                   <span className="nav_name">Peserta</span>
                 </a>
-                <a href="presensi" target="_self" className="nav_link">
-                  <i className="bi bi-person-check nav_icon" />
+                <a
+                  href="presensi"
+                  target="_self"
+                  className={`nav_link ${activeLink === '/presensi' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('presensi')}
+                >
+                  <img src={icon_presensi} alt="" className="nav_icon" />
                   <span className="nav_name">Presensi Magang</span>
                 </a>
-                <a href="penugasan" target="_self" className="nav_link">
-                  <i className="bi bi-list-task nav_icon" />
+                <a
+                  href="penugasan"
+                  target="_self"
+                  className={`nav_link ${activeLink === '/penugasan' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('penugasan')}
+                >
+                  <img src={icon_penugasan} alt="" className="nav_icon" />
                   <span className="nav_name">Penugasan</span>
                 </a>
               </div>
             </div>
-            <a href="/" target="_self" className="nav_link">
+            <a
+              href="/"
+              target="_self"
+              className="nav_link"
+            >
               <i className="bi bi-box-arrow-left nav_icon" />
               <span className="nav_name">SignOut</span>
             </a>
@@ -225,7 +287,7 @@ function Penugasan() {
               >
                 Penugasan
               </p>
-              <div className="card" style={{ backgroundColor: "red" }}>
+              <div className="card-waktu" style={{ backgroundColor: "red", display: "flex", flexDirection: "column", justifyContent: "center", textAlign: "center" }}>
                 <p style={{ color: "white" }}>Tanggal Hari Ini</p>
                 <p style={{ color: "white" }}>{timeNow}</p>
               </div>
@@ -236,10 +298,10 @@ function Penugasan() {
               </div>
               <div
                 className="card-penugasan-1 red-penugasan"
-                style={{ display: "flex", alignItems: "center" }}
+                style={{ marginTop: 10, cursor: "pointer" }}
+                onClick={handleShowTaskForm}
               >
                 <button
-                  onClick={handleShowTaskForm}
                   style={{
                     backgroundColor: "red",
                     border: "none",
@@ -255,90 +317,115 @@ function Penugasan() {
                 <p style={{ textAlign: "center", fontFamily: "Poppins, sans-serif", fontSize: 20, color: "black", marginBottom: 10 }}>
                   Daftar Tugas
                 </p>
-                <table className="custom-table">
-                  <thead>
-                    <tr>
-                      <th>No</th>
-                      <th>Judul</th>
-                      <th>Deskripsi</th>
-                      <th>Deadline</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tugas.map((tugas, index) => (
-                      <tr key={tugas.id}>
-                        <td>{index + 1}</td>
-                        <td>{tugas.judul}</td>
-                        <td>{tugas.tugas_url}</td>
-                        <td>{formatDueDate(tugas.dueDate)}</td>
-                        <td>
-                          <button
-                            onClick={() => {
-                              getTugasById(tugas.id);
-                              setIdTugas(tugas.id);
-                            }}
-                            className="button is-small is-danger"
-                          >
-                            Detail
-                          </button>
-                        </td>
+                <div className='table-container-penugasan'>
+                  <table className="custom-table">
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Judul</th>
+                        <th>Deskripsi</th>
+                        <th>Deadline</th>
+                        <th>Opsi</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {tugas.map((tugas, index) => (
+                        <tr key={tugas.id}>
+                          <td>{index + 1}</td>
+                          <td>{tugas.judul}</td>
+                          <td>{tugas.tugas_url}</td>
+                          <td>{formatDueDate(tugas.dueDate)}</td>
+                          <td>
+                            <button
+                              onClick={() => {
+                                getTugasById(tugas.id, index); // Pass the task ID and index
+                              }}
+                              className="button is-small is-danger"
+                            >
+                              Detail
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <div className="container-penugasan right">
                 <p style={{ textAlign: "center", fontFamily: "Poppins, sans-serif", fontSize: 20, color: "black", marginBottom: 10 }}>
                   Detail Penugasan
                 </p>
-                <table className="custom-table">
-                  <thead>
-                    <tr>
-                      <th>Nama</th>
-                      <th>Tugas URL</th>
-                      <th>Status Pengerjaan</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {statustugas.map((tugas, index) => (
-                      <tr key={tugas.id}>
-                        <td>{tugas.nama}</td>
-                        <td>
-                          {tugas.status_tugas[0] && tugas.status_tugas[0].status_pengerjaan ? (
-                            <a href={tugas.status_tugas[0].tugas_url} target="_self" rel="noopener noreferrer">
-                              Sudah Mengerjakan
-                            </a>
-                          ) : (
-                            tugas.status_tugas[0] && tugas.status_tugas[0].tugas_url ? (
-                              <a href={tugas.status_tugas[0].tugas_url} target="_self" rel="noopener noreferrer">
-                                {tugas.status_tugas[0].tugas_url}
-                              </a>
-                            ) : (
-                              "Belum Mengerjakan"
-                            )
-                          )}
-                        </td>
-                        <td>
-                          {tugas.status_tugas[0] && tugas.status_tugas[0].status_pengerjaan
-                            ? "Sudah Selesai"
-                            : "Belum Selesai"}
-                        </td>
+                <div className="table-container-penugasan">
+                  <table className="custom-table">
+                    <thead>
+                      <tr>
+                        <th>Nama</th>
+                        <th>Bukti Pengerjaan</th>
+                        <th>Status Pengerjaan</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <button
-                  onClick={() => exportPenugasan(idtugas)}
-                  className="button is-success"
-                  style={{
-                    marginTop: 18,
-                    float: 'right',
-                    display: idtugas === '' ? 'none' : 'block'
-                  }}
-                >
-                  Export to Excel
-                </button>
+                    </thead>
+                    <tbody>
+                      {statustugas.map((tugas, index) => (
+                        <tr key={tugas.id}>
+                          <td>{tugas.nama}</td>
+                          <td>
+                            {tugas.status_tugas && tugas.status_tugas[0] && tugas.status_tugas[0].status_pengerjaan
+                              ? (
+                                <button
+                                  onClick={() => {
+                                    setSelectedImageUrl(tugas.status_tugas[0].tugas_url);
+                                    setSelectedItemIndex(index);
+                                    setShowImageOverlay(true);
+                                  }}
+                                  className="button is-small is-danger"
+                                >
+                                  Sudah Mengerjakan
+                                </button>
+                              )
+                              : (
+                                tugas.status_tugas && tugas.status_tugas[0] && tugas.status_tugas[0].tugas_url
+                                  ? (
+                                    <button
+                                      onClick={() => {
+                                        setSelectedImageUrl(tugas.status_tugas[0].tugas_url);
+                                        setSelectedItemIndex(selectedItemIndex);
+                                        setShowImageOverlay(true);
+                                      }}
+                                      className="button is-small is-danger"
+                                    >
+                                      Lihat Gambar
+                                    </button>
+                                  )
+                                  : "Belum Mengerjakan"
+                              )}
+                          </td>
+                          <td>
+                            {tugas.status_tugas ? (
+                              tugas.status_tugas[0] && tugas.status_tugas[0].status_pengerjaan
+                                ? "Sudah Selesai"
+                                : "Belum Selesai"
+                            ) : "Belum Selesai"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  {showImageOverlay && (
+                    <ImageOverlay imageUrl={selectedImageUrl} onClose={() => setShowImageOverlay(false)} />
+                  )}
+                  <button
+                    onClick={() => exportPenugasan(idtugas)}
+                    className="button is-success"
+                    style={{
+                      marginTop: 18,
+                      float: 'right',
+                      display: idtugas ? 'block' : 'none'
+                    }}
+                  >
+                    Export to Excel
+                  </button>
+
+                </div>
               </div>
             </section>
           </div>
@@ -350,6 +437,7 @@ function Penugasan() {
         onHide={handleCloseTaskForm}
         backdrop="static"
         style={{ backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 1050 }}
+        dialogClassName="modal-dialog-centered"
       >
         <Modal.Header closeButton>
           <Modal.Title>Form Penugasan</Modal.Title>

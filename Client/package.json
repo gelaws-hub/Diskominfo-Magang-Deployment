@@ -2,7 +2,7 @@
   "name": "kominfo",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://diskominfo-smg-magang.cloud",
+  "homepage": "https://localhost:3000",
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
@@ -24,6 +24,7 @@
     "less": "^4.2.0",
     "less-loader": "^11.1.3",
     "moment-timezone": "^0.5.43",
+    "package-name": "^0.1.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
     "react-date-range": "^1.4.0",

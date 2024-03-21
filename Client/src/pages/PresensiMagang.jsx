@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from "react-router-dom";
 import './PresensiMagang.css';
 import logo from "../Assets/diskominfo.png"
 import "bootstrap/dist/css/bootstrap.css"
 import "bootstrap-icons/font/bootstrap-icons.css"
-import "../Components/SideBar/Style.css"
-import { axiosJWTadmin } from "../config/axiosJWT";
+import "../Components/SideBar/Navbar.css"
+import { axiosJWTadmin } from '../config/axiosJWT';
 import { TabTitle } from '../TabName';
+import ImageOverlay from '../Components/Admin/ImageOverlay';
+import icon from "../Assets/icon.png"
+import icon_bars from "../Assets/icon_3bars.svg"
+import icon_admin from "../Assets/icon_usercircle.svg"
+import icon_peserta from "../Assets/icon_peserta.svg"
+import icon_homepage from "../Assets/icon_homepage.svg"
+import icon_presensi from "../Assets/icon_presensi.svg"
+import icon_penugasan from "../Assets/icon_penugasan.svg"
 
 export const PresensiMagang = () => {
   TabTitle('Presensi Magang');
@@ -15,7 +24,27 @@ export const PresensiMagang = () => {
 
   const [currentTime, setCurrentTime] = useState('');
   const [searchDate, setSearchDate] = useState('');
-  const [loading, setLoading] = useState(true); // Add a loading state
+  const [loading, setLoading] = useState(true);
+
+  const [showImageOverlay, setShowImageOverlay] = useState(false);
+  const [selectedImage, setSelectedImage] = useState('');
+
+  const location = useLocation();
+  const [activeLink, setActiveLink] = useState(location.pathname);
+
+  const handleNavLinkClick = (path) => {
+    setActiveLink(path);
+  };
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setShowImageOverlay(true);
+  };
+
+  const handleCloseImageOverlay = () => {
+    setSelectedImage('');
+    setShowImageOverlay(false);
+  };
 
   useEffect(() => {
     getUsers();
@@ -65,13 +94,17 @@ export const PresensiMagang = () => {
       const dateTimeString = data.datetime;
       const dateTime = new Date(dateTimeString);
 
-      const dateOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
-      const timeOptions = { hour: '2-digit', minute: '2-digit' };
+      const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
+      const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
 
       const date = dateTime.toLocaleDateString(undefined, dateOptions);
       const time = dateTime.toLocaleTimeString(undefined, timeOptions);
 
-      const dateTimeStringFormatted = `${date} - ${time}`;
+      // Memecah tanggal menjadi bagian-bagian untuk disusun kembali sesuai dengan format yang diinginkan
+      const [month, day, year] = date.split('/');
+      const formattedDate = `${day}/${month}/${year}`;
+
+      const dateTimeStringFormatted = `${formattedDate} - ${time}`;
       setCurrentTime(dateTimeStringFormatted);
     } catch (error) {
       console.error('Error fetching current time:', error);
@@ -136,7 +169,7 @@ export const PresensiMagang = () => {
           </div>
           <div className="header_img">
             <img
-              src="https://reqres.in/img/faces/5-image.jpg"
+              src={icon}
               alt="Clue Mediator"
             />
           </div>
@@ -150,46 +183,59 @@ export const PresensiMagang = () => {
                 className="nav_logo"
               >
                 {showNav ? (
-                  <img src={logo} alt="" style={{ width: '150px', height: 'auto' }} />
+                  <img
+                    src={logo}
+                    alt=""
+                    style={{ width: "120px", height: "auto" }}
+                  />
                 ) : (
-                  <i className="bi bi-border-width nav_logo-icon" />
+                  <img src={icon_bars} alt="" className="nav_icon" />
                 )}
               </a>
               <div className="nav_list">
                 <a
                   href="homepage"
                   target="_self"
-                  className="nav_link"
+                  className={`nav_link ${activeLink === '/homepage' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('homepage')}
                 >
-                  <i className="bi bi-house nav_icon" />
+                  <img src={icon_homepage} alt="" className="nav_icon" />
                   <span className="nav_name">Home</span>
                 </a>
-                <a href="admin" target="_self" className="nav_link">
-                  <i className="bi bi-person-check-fill nav_icon" />
+                <a
+                  href="admin"
+                  target="_self"
+                  className={`nav_link ${activeLink === '/admin' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('admin')}
+                >
+                  <img src={icon_admin} alt="" className="nav_icon" />
                   <span className="nav_name">Admin</span>
                 </a>
                 <a
                   href="peserta"
                   target="_self"
-                  className="nav_link"
+                  className={`nav_link ${activeLink === '/peserta' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('peserta')}
                 >
-                  <i className="bi bi-person nav_icon" />
+                  <img src={icon_peserta} alt="" className="nav_icon" />
                   <span className="nav_name">Peserta</span>
                 </a>
                 <a
                   href="presensi"
                   target="_self"
-                  className="nav_link"
+                  className={`nav_link ${activeLink === '/presensi' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('presensi')}
                 >
-                  <i className="bi bi-person-check nav_icon" />
+                  <img src={icon_presensi} alt="" className="nav_icon" />
                   <span className="nav_name">Presensi Magang</span>
                 </a>
                 <a
                   href="penugasan"
                   target="_self"
-                  className="nav_link"
+                  className={`nav_link ${activeLink === '/penugasan' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('penugasan')}
                 >
-                  <i className="bi bi-list-task nav_icon" />
+                  <img src={icon_penugasan} alt="" className="nav_icon" />
                   <span className="nav_name">Penugasan</span>
                 </a>
               </div>
@@ -209,20 +255,20 @@ export const PresensiMagang = () => {
             <div className="column">
               <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: 25, marginBottom: 20 }}>Presensi Magang</p>
               <div className="cards">
-                <div className="card" style={{ backgroundColor: "#4CAF50" }}>
+                <div className="card-1" style={{ backgroundColor: "green", display: "flex", flexDirection: "column", justifyContent: "center", textAlign: "center" }}>
                   <p style={{ color: "white" }}>Total Hadir Hari Ini</p>
                   <p style={{ color: "white" }}>{totalAttendance}</p>
                 </div>
-                <div className="card" style={{ backgroundColor: "#FF5733" }}>
+                <div className="card-2" style={{ backgroundColor: "red", display: "flex", flexDirection: "column", justifyContent: "center", textAlign: "center" }}>
                   <p style={{ color: "white" }}>Tanggal Hari Ini</p>
                   <p style={{ color: "white" }}>{currentTime}</p>
                 </div>
               </div>
               <div className="button-container">
-                <button onClick={() => getPresensiBelum()} className="button is-small is-danger">
+                <button onClick={() => getPresensiBelum()} className="button is-small is-danger button-presensi">
                   Peserta Belum Absen
                 </button>
-                <button onClick={() => getUsers()} className="button is-small is-success">
+                <button onClick={() => getUsers()} className="button is-small is-success button-presensi">
                   Peserta Sudah Absen
                 </button>
               </div>
@@ -245,46 +291,57 @@ export const PresensiMagang = () => {
               {loading ? (
                 <p>Loading...</p>
               ) : (
-                <table className="custom-table-presensi">
-                  <thead>
-                    <tr>
-                      <th>No</th>
-                      <th>Nama</th>
-                      <th>Check-In</th>
-                      <th>Check-Out</th>
-                      <th>Image In</th>
-                      <th>Image Out</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Array.isArray(users) && users.map((user, index) => (
-                      <tr key={user.id}>
-                        <td>{index + 1}</td>
-                        <td>{user.nama}</td>
-                        {user.presensimagang.map((entry, entryIndex) => (
-                          <React.Fragment key={entry.id}>
-                            <td>{entry.check_in ? formatDateTime(entry.check_in) : '-'}</td>
-                            <td>{entry.check_out ? formatDateTime(entry.check_out) : '-'}</td>
-                            <td>
-                              {entry.image_url_in ? (
-                                <a href={entry.image_url_in} target="_self" rel="noopener noreferrer">
-                                  Absen Masuk
-                                </a>
-                              ) : '-'}
-                            </td>
-                            <td>
-                              {entry.image_url_out ? (
-                                <a href={entry.image_url_out} target="_self" rel="noopener noreferrer">
-                                  Absen Pulang
-                                </a>
-                              ) : '-'}
-                            </td>
-                          </React.Fragment>
-                        ))}
+                <div className='table-container-presensi'>
+                  <table className="custom-table-presensi">
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Check-In</th>
+                        <th>Check-Out</th>
+                        <th>Image In</th>
+                        <th>Image Out</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {Array.isArray(users) && users.map((user, index) => (
+                        <tr key={user.id}>
+                          <td>{index + 1}</td>
+                          <td>{user.nama}</td>
+                          {user.presensimagang.map((entry, entryIndex) => (
+                            <React.Fragment key={entry.id}>
+                              <td>{entry.check_in ? formatDateTime(entry.check_in) : '-'}</td>
+                              <td>{entry.check_out ? formatDateTime(entry.check_out) : '-'}</td>
+                              <td>
+                                {entry.image_url_in ? (
+                                  <button
+                                    onClick={() => handleImageClick(entry.image_url_in)}
+                                    className="button is-small is-success"
+                                  >
+                                    Absen Masuk
+                                  </button>
+                                ) : '-'}
+                              </td>
+                              <td>
+                                {entry.image_url_out ? (
+                                  <button
+                                    onClick={() => handleImageClick(entry.image_url_out)}
+                                    className="button is-small is-success"
+                                  >
+                                    Absen Pulang
+                                  </button>
+                                ) : '-'}
+                              </td>
+                            </React.Fragment>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              {showImageOverlay && (
+                <ImageOverlay imageUrl={selectedImage} onClose={handleCloseImageOverlay} />
               )}
               <button onClick={exportPresensi} className="button is-success" style={{ marginTop: 18, float: 'right' }}>
                 Export to Excel

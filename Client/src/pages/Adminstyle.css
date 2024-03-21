@@ -24,12 +24,24 @@
 .custom-table th,
 .custom-table td {
     padding: 12px 15px;
-    text-align: left;
+    text-align: center !important;
     border-bottom: 1px solid #ddd;
 }
 
 .custom-table th {
     background-color: #f2f2f2;
+}
+
+.custom-table th {
+    background-color: #f2f2f2;
+}
+
+.custom-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.custom-table tr:hover {
+    background-color: #ddd;
 }
 
 @media (max-width: 767px) {
@@ -129,5 +141,11 @@
         padding: 10px;
         border-radius: 5px;
         max-width: 150px;
+    }
+    .button {
+        padding: 0 !important;
+    }
+    .button.is-success {
+        padding: 0 10px !important;
     }
 }

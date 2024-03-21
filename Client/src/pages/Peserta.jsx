@@ -1,16 +1,25 @@
-import { axiosJWTadmin } from "../config/axiosJWT";
-import { useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import logo from "../Assets/diskominfo.png";
-import "./Peserta.css";
-import { Button, Modal, Form, Table } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import "../Components/SideBar/Style.css";
-import { TabTitle } from "../TabName";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { axiosJWTadmin } from "../config/axiosJWT"
+import { useNavigate, useLocation } from "react-router-dom"
+import React, { useState, useEffect } from "react"
+import logo from "../Assets/diskominfo.png"
+import "./Peserta.css"
+import { Button, Modal, Form, Table } from "react-bootstrap"
+import "bootstrap/dist/css/bootstrap.css"
+import "bootstrap-icons/font/bootstrap-icons.css"
+import "../Components/SideBar/Navbar.css"
+import { TabTitle } from "../TabName"
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import EditUser from "../Components/Admin/EditUser"
+import icon_delete from "../Assets/icon_trash.svg"
+import icon_edit from "../Assets/icon_edit.svg"
+import icon from "../Assets/icon.png"
+import icon_bars from "../Assets/icon_3bars.svg"
+import icon_admin from "../Assets/icon_usercircle.svg"
+import icon_peserta from "../Assets/icon_peserta.svg"
+import icon_homepage from "../Assets/icon_homepage.svg"
+import icon_presensi from "../Assets/icon_presensi.svg"
+import icon_penugasan from "../Assets/icon_penugasan.svg"
 
 export const Peserta = () => {
   TabTitle("Peserta");
@@ -31,6 +40,25 @@ export const Peserta = () => {
   const [showPresensiModal, setShowPresensiModal] = useState(false);
   const [selectedPesertaId, setSelectedPesertaId] = useState(null);
   const [selectedPesertaName, setSelectedPesertaName] = useState("");
+  const [showEditUserModal, setShowEditUserModal] = useState(false);
+
+  const [editingUserId, setEditingUserId] = useState(null);
+
+  const location = useLocation();
+  const [activeLink, setActiveLink] = useState(location.pathname);
+
+  const handleNavLinkClick = (path) => {
+    setActiveLink(path);
+  };
+
+  const handleOpenEditUserModal = (userId) => {
+    setEditingUserId(userId);
+    setShowEditUserModal(true);
+  };
+
+  const handleCloseUserModal = () => {
+    setShowEditUserModal(false);
+  };
 
   const getPresensiPeserta = async (id) => {
     try {
@@ -47,7 +75,7 @@ export const Peserta = () => {
       navigate("/");
       console.error(error);
     }
-  };  
+  };
 
   const handleShowPresensiModal = (id) => {
     setSelectedPesertaId(id);
@@ -57,7 +85,17 @@ export const Peserta = () => {
 
   const handleClosePresensiModal = () => {
     setShowPresensiModal(false);
-  }; 
+  };
+
+  const updateUser = (updatedUser) => {
+    const updatedUsers = users.map((user) => {
+      if (user.id === updatedUser.id) {
+        return updatedUser;
+      }
+      return user;
+    });
+    setUsers(updatedUsers);
+  };
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
@@ -137,11 +175,13 @@ export const Peserta = () => {
         default:
           endpoint = "peserta";
       }
+
       const response = await axiosJWTadmin.get(
         `http://localhost:3000/admin/${endpoint}`
       );
+
       setUsers(response.data.peserta_magang);
-      setActiveCategory(category); // Update the active category
+      setActiveCategory(category);
     } catch (error) {
       navigate("/");
       console.log(error);
@@ -273,16 +313,17 @@ export const Peserta = () => {
   );
 
   useEffect(() => {
-    setIsLoading(true); // Atur isLoading ke true saat permintaan HTTP dimulai
-    getUsers("all")
+    setIsLoading(true);
+    getUsers(activeCategory)
       .then(() => {
-        setIsLoading(false); // Atur isLoading ke false saat data diterima
+        setIsLoading(false);
       })
       .catch(() => {
-        setIsLoading(false); // Atur isLoading ke false jika ada kesalahan
+        setIsLoading(false);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [activeCategory]);
+
 
   const deleteUser = async (id) => {
     if (window.confirm("Apakah Anda yakin ingin menghapus pengguna ini?")) {
@@ -355,48 +396,80 @@ export const Peserta = () => {
             />
           </div>
           <div className="header_img">
-            <img
-              src="https://reqres.in/img/faces/5-image.jpg"
-              alt="Clue Mediator"
-            />
+            <img src={icon} alt="" />
           </div>
         </header>
         <div className={`l-navbar${showNav ? " show" : ""}`}>
           <nav className="nav">
             <div>
-              <a href="/homepage" target="_self" className="nav_logo">
-                <div className="header_toggle">
-                  {showNav && window.innerWidth > 768 ? (
-                    <img src={logo} alt="" style={{ width: '150px', height: 'auto' }} />
-                  ) : (
-                    <i className="bi bi-border-width nav_logo-icon" />
-                  )}
-                </div>
+              <a
+                href="/homepage"
+                target="_self"
+                className="nav_logo"
+              >
+                {showNav ? (
+                  <img
+                    src={logo}
+                    alt=""
+                    style={{ width: "120px", height: "auto" }}
+                  />
+                ) : (
+                  <img src={icon_bars} alt="" className="nav_icon" />
+                )}
               </a>
               <div className="nav_list">
-                <a href="homepage" target="_self" className="nav_link">
-                  <i className="bi bi-house nav_icon" />
+                <a
+                  href="homepage"
+                  target="_self"
+                  className={`nav_link ${activeLink === '/homepage' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('homepage')}
+                >
+                  <img src={icon_homepage} alt="" className="nav_icon" />
                   <span className="nav_name">Home</span>
                 </a>
-                <a href="admin" target="_self" className="nav_link">
-                  <i className="bi bi-person-check-fill nav_icon" />
+                <a
+                  href="admin"
+                  target="_self"
+                  className={`nav_link ${activeLink === '/admin' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('admin')}
+                >
+                  <img src={icon_admin} alt="" className="nav_icon" />
                   <span className="nav_name">Admin</span>
                 </a>
-                <a href="peserta" target="_self" className="nav_link">
-                  <i className="bi bi-person nav_icon" />
+                <a
+                  href="peserta"
+                  target="_self"
+                  className={`nav_link ${activeLink === '/peserta' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('peserta')}
+                >
+                  <img src={icon_peserta} alt="" className="nav_icon" />
                   <span className="nav_name">Peserta</span>
                 </a>
-                <a href="presensi" target="_self" className="nav_link">
-                  <i className="bi bi-person-check nav_icon" />
+                <a
+                  href="presensi"
+                  target="_self"
+                  className={`nav_link ${activeLink === '/presensi' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('presensi')}
+                >
+                  <img src={icon_presensi} alt="" className="nav_icon" />
                   <span className="nav_name">Presensi Magang</span>
                 </a>
-                <a href="penugasan" target="_self" className="nav_link">
-                  <i className="bi bi-list-task nav_icon" />
+                <a
+                  href="penugasan"
+                  target="_self"
+                  className={`nav_link ${activeLink === '/penugasan' ? 'active' : ''}`}
+                  onClick={() => handleNavLinkClick('penugasan')}
+                >
+                  <img src={icon_penugasan} alt="" className="nav_icon" />
                   <span className="nav_name">Penugasan</span>
                 </a>
               </div>
             </div>
-            <a href="/" target="_self" className="nav_link">
+            <a
+              href="/"
+              target="_self"
+              className="nav_link"
+            >
               <i className="bi bi-box-arrow-left nav_icon" />
               <span className="nav_name">SignOut</span>
             </a>
@@ -418,9 +491,7 @@ export const Peserta = () => {
                 >
                   Peserta
                 </p>
-                <p className="count-peserta"
-                  style={{ textAlign: "center" }}
-                >
+                <p className="count-peserta" style={{ textAlign: "center" }}>
                   Jumlah Peserta:{" "}
                   {searchTerm === "" ? users.length : filteredUsers.length}{" "}
                   Peserta
@@ -489,8 +560,8 @@ export const Peserta = () => {
                   Peserta Calon
                 </button>
               </div>
-              <div className="table-container">
-                <table className="custom-table">
+              <div className="table-container-peserta">
+                <table className="custom-table-peserta">
                   <thead>
                     <tr>
                       <th>No</th>
@@ -500,7 +571,7 @@ export const Peserta = () => {
                       <th>Tanggal Mulai</th>
                       <th>Tanggal Selesai</th>
                       <th>Status Aktif</th>
-                      <th>Actions</th>
+                      <th>Opsi</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -524,21 +595,31 @@ export const Peserta = () => {
                           <td>{user.asal_jurusan}</td>
                           <td>{user.tanggal_mulai}</td>
                           <td>{user.tanggal_selesai}</td>
+                          <td>{user.status_aktif ? "Aktif" : "Tidak Aktif"}</td>
                           <td>
-                            {user.status_aktif ? "Aktif" : "Tidak Aktif"}
-                          </td>
-                          <td>
-                            <Link
-                              to={`/edit/${user.id}`}
-                              className="button is-small is-info"
-                            >
-                              Edit
-                            </Link>
                             <button
-                              onClick={() => deleteUser(user.id)}
-                              className="button is-small is-danger"
+                              className="button is-small"
+                              style={{ background: 'none', border: 'none' }}
+                              onClick={() => handleOpenEditUserModal(user.id)}
                             >
-                              Delete
+                              <img
+                                className="icon_button_peserta"
+                                src={icon_edit}
+                                alt=""
+                                style={{ width: '20px', height: '20px', cursor: 'pointer', marginRight: 5 }}
+                              />
+                            </button>
+                            <button
+                              className="button is-small"
+                              style={{ background: 'none', border: 'none' }}
+                              onClick={() => deleteUser(user.id)}
+                            >
+                              <img
+                                className="icon_button_peserta"
+                                src={icon_delete}
+                                alt=""
+                                style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                              />
                             </button>
                           </td>
                         </tr>
@@ -546,6 +627,12 @@ export const Peserta = () => {
                     )}
                   </tbody>
                 </table>
+                <EditUser
+                  userId={editingUserId}
+                  handleCloseModal={() => handleCloseUserModal()}
+                  showEditUserModal={showEditUserModal}
+                  updateUserData={updateUser}
+                />
               </div>
               <div className="pagination-peserta">
                 <ul className="pagination-list-peserta">

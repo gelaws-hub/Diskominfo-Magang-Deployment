@@ -4,15 +4,12 @@ import Homepage from './pages/Homepage';
 import Peserta from './pages/Peserta';
 import PresensiMagang from './pages/PresensiMagang';
 import Penugasan from './pages/Penugasan';
-import Statistik from './pages/Statistik';
-import EditUser from './Components/Admin/EditUser';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
 import Data from './pages/user/Data'
 import Presensi from './pages/user/Presensi';
 import Tugas from './pages/user/Tugas';
 import UserPages from './pages/user/UserPages';
 import Admin from './pages/Admin';
-import EditAdmin from './Components/Admin/EditAdmin';
 import { ToastContainer } from 'react-toastify';
 
 const App = () => {
@@ -25,16 +22,12 @@ const App = () => {
         <Route path="user/presensi" element={<Presensi/>}/>
         <Route path="user/tugas" element={<Tugas/>}/>
         <Route path="user/homepage" element={<UserPages />}/>
-       
-        <Route path='/edit/:id' element={<EditUser />}/> 
+
         <Route path='admin' element={<Admin />} />
         <Route path="homepage" element={<Homepage />}/>
         <Route path='peserta' element={<Peserta />}/>
         <Route path='presensi' element={<PresensiMagang />}/>
-        <Route path='penugasan' element={<Penugasan />}/>
-        {/* <Route path='statistik' element={<Statistik />}/> */}
-        {/* <Route path='edit-admin/:id' element={<EditAdmin />}/> */}
-        
+        <Route path='penugasan' element={<Penugasan />}/>   
       </Routes>
     </BrowserRouter>
   );

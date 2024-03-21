@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 import { axiosJWTadmin } from "../../config/axiosJWT";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Add this line to import the default CSS for styling the notifications.
 
 const EditAdmin = ({ adminId, handleCloseModal, showEditAdminModal, updateAdminData }) => {
     const [adminData, setAdminData] = useState({
@@ -23,10 +25,18 @@ const EditAdmin = ({ adminId, handleCloseModal, showEditAdminModal, updateAdminD
                 username: adminData.username,
                 password: adminData.password
             });
-            handleCloseModal()
+            handleCloseModal();
             updateAdminData(adminData);
+            toast.success('Admin data updated successfully', {
+                position: 'top-right',
+                autoClose: 3000,
+            });
         } catch (error) {
             console.log(error);
+            toast.error('An error occurred while updating admin data', {
+                position: 'top-right',
+                autoClose: 3000,
+            });
         }
     }
 

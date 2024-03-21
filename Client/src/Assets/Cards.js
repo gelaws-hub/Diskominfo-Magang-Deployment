@@ -6,7 +6,6 @@ import axios from 'axios';
 import jwt_decode from "jwt-decode"
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer, toast } from 'react-toastify';
-import { showSuccessNotification } from '../Components/User/toastSuccess';
 import { Modal } from 'react-bootstrap';
 
 const Cards = ({ data }) => {
@@ -52,7 +51,7 @@ const Cards = ({ data }) => {
 
   const cancelFile = async () => {
     try {
-      const ambilid = await axios.get('http://localhost:3000/account/token', {
+      await axios.get('http://localhost:3000/account/token', {
         headers: {
           'role': "peserta_magang"
         },

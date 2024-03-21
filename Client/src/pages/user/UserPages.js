@@ -20,8 +20,7 @@ import { isUnauthorizedError }  from '../../config/errorHandling';
 import { axiosJWTuser } from "../../config/axiosJWT"
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer, toast } from 'react-toastify';
-
-
+import icon from "../../Assets/icon.png"
 
 const UserPages = () => {
   TabTitle('Homepage');
@@ -36,9 +35,6 @@ const UserPages = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [formData, setFormData] = useState( {password:""});
-  // const formData = {
-  //   password: Password
-  // };
 
 
   useEffect(() => {
@@ -116,7 +112,7 @@ const showErrorNotification = (message) => {
   return (
     <div className="body-main">
       <div className={`body-area${showNav ? " body-pd" : ""}`}>
-        <header className={`header${showNav ? " body-pd" : ""}`}>
+      <header className={`header${showNav ? " body-pd" : ""}`}>
           <div className="header_toggle">
             <i
               className={`bi ${showNav ? "bi-x" : "bi-list"}`}
@@ -124,18 +120,25 @@ const showErrorNotification = (message) => {
             />
           </div>
           <div className="header_img">
-            <img src="https://reqres.in/img/faces/5-image.jpg" alt="" />
+            <img
+              src={icon}
+              alt=""
+            />
           </div>
         </header>
         <div className={`l-navbar${showNav ? " show" : ""}`}>
           <nav className="nav">
             <div>
-              <a href="/user/homepage" target="_self" className="nav_logo">
+              <a
+                href="/user/homepage"
+                target="_self"
+                className="nav_logo"
+              >
                 {showNav ? (
                   <img
                     src={logo}
                     alt=""
-                    style={{ width: "150px", height: "auto", marginRight:"-35px" }}
+                    style={{ width: "120px", height: "auto" }}
                   />
                 ) : (
                   <i className="bi bi-border-width nav_logo-icon" />
@@ -160,7 +163,11 @@ const showErrorNotification = (message) => {
                 </a>
               </div>
             </div>
-            <a href="/" target="_self" className="nav_link">
+            <a
+              href="/"
+              target="_self"
+              className="nav_link"
+            >
               <i className="bi bi-box-arrow-left nav_icon" />
               <span className="nav_name">SignOut</span>
             </a>
@@ -201,7 +208,7 @@ const showErrorNotification = (message) => {
               </div>
               <div className="space"></div>
               <div className="user-image">
-                <img src="https://reqres.in/img/faces/5-image.jpg" alt="" />
+                <img src={icon} alt="" />
               </div>
             </div>
             <div className="action-buttons">
@@ -211,7 +218,7 @@ const showErrorNotification = (message) => {
               </a>
               <a href="presensi">
                 <img src={presensi} alt="Penugasan" />
-                <span>Penugasan</span>
+                <span>Presensi</span>
               </a>
               <a href="tugas">
                 <img src={penugasan} alt="Statistik" />

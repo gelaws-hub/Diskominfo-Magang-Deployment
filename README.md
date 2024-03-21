@@ -9,3 +9,8 @@ Feel free to check it out
 `M. Bintang Prayoga Utama`
 `Yosia Aser Camme`
 `Muhammad Jawaar`
+
+Tech used :
+ReactJS (frontEnd)
+NodeJS (BackEnd)
+XAMPP - MySQL (Database)

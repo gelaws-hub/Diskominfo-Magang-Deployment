@@ -17,7 +17,7 @@ const Login = () => {
     const navigate = useNavigate('');
     useEffect(() => {
         Logout();
-      }, [])
+    }, [])
 
     const Auth = async (e) => {
         e.preventDefault();
@@ -29,9 +29,10 @@ const Login = () => {
             }, {
             })
             if (role === "admin") {
-                navigate('/homepage'); 
+                navigate('/homepage');
             } else if (role === "peserta_magang") {
-                navigate('/user/homepage'); }
+                navigate('/user/homepage');
+            }
         } catch (error) {
             if (error.response) {
                 setMsg(error.response.data.message);
@@ -41,11 +42,11 @@ const Login = () => {
 
     const Logout = async () => {
         try {
-          await axios.delete('http://localhost:3000/account/logout');
+            await axios.delete('http://localhost:3000/account/logout');
         } catch (error) {
-          console.log("Error during logout:", error);
+            console.log("Error during logout:", error);
         }
-      }
+    }
 
     return (
         <section className="hero is-fullheight" style={{ backgroundImage: `url(${background_login})`, backgroundSize: 'cover' }}>
@@ -86,7 +87,7 @@ const Login = () => {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="field has-text-centered"> {/* Tambahkan class has-text-centered di sini */}
+                                <div className="field has-text-centered">
                                     <label className="label">Role</label>
                                     <div className="control">
                                         <label className="radio">
